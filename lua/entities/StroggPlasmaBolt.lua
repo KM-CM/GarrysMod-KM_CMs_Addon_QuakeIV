@@ -57,9 +57,10 @@ if CLIENT then
 
 			render_SetMaterial( mMaterial )
 
-			for i = 0, 1, .4 do
-				render_DrawSprite( self:GetPos() - self:GetForward() * ( 1 - i ) * 16, 32 * i, 32 * i, cOuterColor )
-				for j = 1, 4 do render_DrawSprite( self:GetPos() - self:GetForward() * ( 1 - i ) * 16, 16 * i, 16 * i, cInnerColor ) end
+			// Ye, I know this formula is hard to follow, not sure why I wrote it this way, too lazy to rewrite
+			for i = 0, 1, .1 do
+				render_DrawSprite( self:GetPos() - self:GetForward() * ( 1 - i ) * 16, 24 * i, 24 * i, cOuterColor )
+				for j = 1, 4 do render_DrawSprite( self:GetPos() - self:GetForward() * ( 1 - i ) * 16, 12 * i, 12 * i, cInnerColor ) end
 			end
 		end
 	end )
