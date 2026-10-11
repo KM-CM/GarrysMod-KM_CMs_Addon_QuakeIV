@@ -1,7 +1,7 @@
 AddCSLuaFile()
 DEFINE_BASECLASS "StroggMarine"
 
-list.Set( "NPC", "StroggMarine", {
+list.Set( "NPC", "StroggMarineBlaster", {
 	Name = "#StroggMarineBlaster",
 	Class = "StroggMarineBlaster",
 	Category = "#Strogg"
