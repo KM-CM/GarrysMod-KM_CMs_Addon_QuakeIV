@@ -23,9 +23,6 @@ sound.Add {
 	sound = "npc/sniper/sniper1.wav"
 }
 
-local CEntity = FindMetaTable "Entity"
-local CEntity_GetTable = CEntity.GetTable
-
 local cOuterColor = Color( 255, 32, 0 )
 local cInnerColor = Color( 255, 255, 255 )
 
@@ -49,12 +46,6 @@ if CLIENT then
 		local render_DrawSprite = render.DrawSprite
 	
 		function pEntity:Draw()
-			if CEntity_GetTable( self ).bFromHyperBlaster then
-				render_SetMaterial( mMaterial )
-				render_DrawSprite( self:GetPos(), 32, 32, color_white )
-				return
-			end
-
 			render_SetMaterial( mMaterial )
 
 			// Ye, I know this formula is hard to follow, not sure why I wrote it this way, too lazy to rewrite
@@ -70,6 +61,8 @@ end
 
 local SOLID_VPHYSICS = SOLID_VPHYSICS
 
+local CEntity = FindMetaTable "Entity"
+local CEntity_GetTable = CEntity.GetTable
 local CEntity_SetModel = CEntity.SetModel
 local CEntity_PhysicsInit = CEntity.PhysicsInit
 local CEntity_SetHealth = CEntity.SetHealth
@@ -78,13 +71,8 @@ local CEntity_SetMaxHealth = CEntity.SetMaxHealth
 function ENT:Initialize()
 	CEntity_SetModel( self, "models/weapons/w_missile_launch.mdl" )
 	CEntity_PhysicsInit( self, SOLID_VPHYSICS )
-	CEntity_SetHealth( self, 128 )
-	CEntity_SetMaxHealth( self, 128 )
-
-	if CEntity_GetTable( self ).bFromHyperBlaster then
-		util.SpriteTrail( self, 0, color_white, false, 20, 6, .05, 1 / 128, "sprites/quake4/blaster_fly.vmt" )
-		ParticleEffectAttach( "hyperblaster_streaks", PATTACH_ABSORIGIN_FOLLOW, self, 0 )
-	end
+	CEntity_SetHealth( self, 55 )
+	CEntity_SetMaxHealth( self, 55 )
 end
 
 ENT.__PROJECTILE_IMPACT__ = true

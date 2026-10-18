@@ -18,6 +18,8 @@ sound.Add {
 	}
 }
 
+ENT.bPlantToShoot = true
+
 ENT.Primary_flDelay = .16
 ENT.Primary_flSpreadX = .05
 ENT.Primary_flSpreadY = .05

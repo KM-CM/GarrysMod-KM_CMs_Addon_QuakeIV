@@ -15,6 +15,8 @@ sound.Add {
 	sound = "^Strogg/Marine/MachineGunFire.wav"
 }
 
+ENT.bPlantToShoot = true
+
 ENT.Primary_flDelay = .09
 ENT.Primary_flSpreadX = .05
 ENT.Primary_flSpreadY = .05

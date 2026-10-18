@@ -24,7 +24,7 @@ ENT.flJumpHeight = 64
 
 function ENT:OnCreateRagdoll( pRagdoll ) pRagdoll:EmitSound "StroggMarineDeath" end
 
-ENT.bPlantToShoot = true
+ENT.bPlantToShootLike = true
 
 function ENT:IsInPlantDelta( vTarget, MyTable )
 	local aPose = ( vTarget - MyTable.GetShootPos( self ) ):Angle()
@@ -78,6 +78,8 @@ function ENT:PlantThread( pSchedule, MyTable )
 
 		if MyTable.vaAimTargetPose then
 			local aPose = ( MyTable.vaAimTargetPose - MyTable.GetShootPos( self ) ):Angle()
+			aPose[ 1 ] = math.NormalizeAngle( aPose[ 1 ] )
+			aPose[ 2 ] = math.NormalizeAngle( aPose[ 2 ] )
 			MyTable.vaAimTargetPose = aPose
 			local aBody = self:GetAngles()
 			if math.abs( math.AngleDifference( aBody[ 1 ], aPose[ 1 ] ) ) >= 90 || math.abs( math.AngleDifference( aBody[ 2 ], aPose[ 2 ] ) ) >= 90 then
@@ -158,3 +160,173 @@ function ENT:OnKilled( pDamage )
 	if BaseClass.OnKilled( self, pDamage ) then return end
 	self:BecomeRagdoll( pDamage )
 end
+
+ENT.Dodge = {
+	DiveRoll = {
+		HasDodgePart = function() return true end,
+
+		MinimumSpeed = function() return .5 end,
+		MaximumSpeed = function() return 1.5 end,
+
+		Duration = function( self ) return self:SequenceDuration( self:LookupSequence "dive_roll" ) end,
+
+		Point = function( self, flCycle )
+			local _, v = self:GetSequenceMovement( self:LookupSequence "dive_roll", 0, flCycle )
+			v:Mul( self:GetModelScale() )
+			v:Rotate( self:GetAngles() )
+			v:Add( self:GetPos() )
+			return v
+		end,
+
+		Perform = function( self, MyTable, flMultiplier )
+			MyTable.AnimationSystemHalt( self, MyTable )
+			MyTable.PlaySequenceAndMove( self, "dive_roll", flMultiplier, nil, function()
+				local pEnemy = MyTable.Enemy
+				if IsValid( pEnemy ) then MyTable.vaAimTargetPose = pEnemy:GetPos() + pEnemy:OBBCenter() end
+
+				MyTable.Look( self, MyTable )
+				MyTable.HandleTurning( self, MyTable )
+			end )
+		end
+	},
+
+	JumpBack = {
+		HasDodgePart = function() return true end,
+
+		MinimumSpeed = function() return .5 end,
+		MaximumSpeed = function() return 1.5 end,
+
+		Duration = function( self ) return self:SequenceDuration( self:LookupSequence "step_back" ) end,
+
+		Point = function( self, flCycle )
+			local _, v = self:GetSequenceMovement( self:LookupSequence "step_back", 0, flCycle )
+			v:Mul( self:GetModelScale() )
+			v:Rotate( self:GetAngles() )
+			v:Add( self:GetPos() )
+			return v
+		end,
+
+		Perform = function( self, MyTable, flMultiplier )
+			MyTable.AnimationSystemHalt( self, MyTable )
+			MyTable.PlaySequenceAndMove( self, "step_back", flMultiplier, nil, function()
+				local pEnemy = MyTable.Enemy
+				if IsValid( pEnemy ) then MyTable.vaAimTargetPose = pEnemy:GetPos() + pEnemy:OBBCenter() end
+
+				MyTable.Look( self, MyTable )
+				MyTable.HandleTurning( self, MyTable )
+			end )
+		end
+	},
+
+	DodgeLeft = {
+		HasDodgePart = function() return true end,
+
+		MinimumSpeed = function() return .5 end,
+		MaximumSpeed = function() return 1.5 end,
+
+		Duration = function( self ) return self:SequenceDuration( self:LookupSequence "dodge_left2" ) end,
+
+		Point = function( self, flCycle )
+			local _, v = self:GetSequenceMovement( self:LookupSequence "dodge_left2", 0, flCycle )
+			v:Mul( self:GetModelScale() )
+			v:Rotate( self:GetAngles() )
+			v:Add( self:GetPos() )
+			return v
+		end,
+
+		Perform = function( self, MyTable, flMultiplier )
+			MyTable.AnimationSystemHalt( self, MyTable )
+			MyTable.PlaySequenceAndMove( self, "dodge_left2", flMultiplier, nil, function()
+				local pEnemy = MyTable.Enemy
+				if IsValid( pEnemy ) then MyTable.vaAimTargetPose = pEnemy:GetPos() + pEnemy:OBBCenter() end
+
+				MyTable.Look( self, MyTable )
+				MyTable.HandleTurning( self, MyTable )
+			end )
+		end
+	},
+
+	DodgeRight = {
+		HasDodgePart = function() return true end,
+
+		MinimumSpeed = function() return .5 end,
+		MaximumSpeed = function() return 1.5 end,
+
+		Duration = function( self ) return self:SequenceDuration( self:LookupSequence "dodge_right2" ) end,
+
+		Point = function( self, flCycle )
+			local _, v = self:GetSequenceMovement( self:LookupSequence "dodge_right2", 0, flCycle )
+			v:Mul( self:GetModelScale() )
+			v:Rotate( self:GetAngles() )
+			v:Add( self:GetPos() )
+			return v
+		end,
+
+		Perform = function( self, MyTable, flMultiplier )
+			MyTable.AnimationSystemHalt( self, MyTable )
+			MyTable.PlaySequenceAndMove( self, "dodge_right2", flMultiplier, nil, function()
+				local pEnemy = MyTable.Enemy
+				if IsValid( pEnemy ) then MyTable.vaAimTargetPose = pEnemy:GetPos() + pEnemy:OBBCenter() end
+
+				MyTable.Look( self, MyTable )
+				MyTable.HandleTurning( self, MyTable )
+			end )
+		end
+	},
+
+	StepLeft = {
+		HasDodgePart = function() return true end,
+
+		MinimumSpeed = function() return .5 end,
+		MaximumSpeed = function() return 1.5 end,
+
+		Duration = function( self ) return self:SequenceDuration( self:LookupSequence "attackpoint_left" ) end,
+
+		Point = function( self, flCycle )
+			local _, v = self:GetSequenceMovement( self:LookupSequence "attackpoint_left", 0, flCycle )
+			v:Mul( self:GetModelScale() )
+			v:Rotate( self:GetAngles() )
+			v:Add( self:GetPos() )
+			return v
+		end,
+
+		Perform = function( self, MyTable, flMultiplier )
+			MyTable.AnimationSystemHalt( self, MyTable )
+			MyTable.PlaySequenceAndMove( self, "attackpoint_left", flMultiplier, nil, function()
+				local pEnemy = MyTable.Enemy
+				if IsValid( pEnemy ) then MyTable.vaAimTargetPose = pEnemy:GetPos() + pEnemy:OBBCenter() end
+
+				MyTable.Look( self, MyTable )
+				MyTable.HandleTurning( self, MyTable )
+			end )
+		end
+	},
+
+	StepRight = {
+		HasDodgePart = function() return true end,
+
+		MinimumSpeed = function() return .5 end,
+		MaximumSpeed = function() return 1.5 end,
+
+		Duration = function( self ) return self:SequenceDuration( self:LookupSequence "attackpoint_right" ) end,
+
+		Point = function( self, flCycle )
+			local _, v = self:GetSequenceMovement( self:LookupSequence "attackpoint_right", 0, flCycle )
+			v:Mul( self:GetModelScale() )
+			v:Rotate( self:GetAngles() )
+			v:Add( self:GetPos() )
+			return v
+		end,
+
+		Perform = function( self, MyTable, flMultiplier )
+			MyTable.AnimationSystemHalt( self, MyTable )
+			MyTable.PlaySequenceAndMove( self, "attackpoint_right", flMultiplier, nil, function()
+				local pEnemy = MyTable.Enemy
+				if IsValid( pEnemy ) then MyTable.vaAimTargetPose = pEnemy:GetPos() + pEnemy:OBBCenter() end
+
+				MyTable.Look( self, MyTable )
+				MyTable.HandleTurning( self, MyTable )
+			end )
+		end
+	}
+}
