@@ -23,7 +23,7 @@ sound.Add {
 	sound = "npc/sniper/sniper1.wav"
 }
 
-local cOuterColor = Color( 255, 32, 0 )
+local cOuterColor = Color( 255, 64, 64 )
 local cInnerColor = Color( 255, 255, 255 )
 
 if CLIENT then
