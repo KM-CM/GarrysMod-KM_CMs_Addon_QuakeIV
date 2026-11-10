@@ -38,7 +38,7 @@ SWEP.flCoverY = -2
 SWEP.flCoverZ = 8
 
 SWEP.bBulletLight = true
-SWEP.tBulletLightColor = { 0, 128, 255, 2048 }
+SWEP.tBulletLightColor = { 0, 128, 255, 1024 }
 
 function SWEP:GetProjectilePositionOwner( pOwner, MyTable ) return pOwner:GetShootPos() + pOwner:GetAimVector() * 16 end
 

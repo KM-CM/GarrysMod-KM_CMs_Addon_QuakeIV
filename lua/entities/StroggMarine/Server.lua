@@ -22,7 +22,10 @@ ENT.m_sYawPoseParameter = "body_yaw"
 
 ENT.flJumpHeight = 64
 
-function ENT:OnCreateRagdoll( pRagdoll ) pRagdoll:EmitSound "StroggMarineDeath" end
+function ENT:OnCreateRagdoll( pRagdoll )
+	pRagdoll:EmitSound "StroggMarineDeath"
+	BaseClass.OnCreateRagdoll( self, pRagdoll )
+end
 
 ENT.bPlantToShootLike = true
 

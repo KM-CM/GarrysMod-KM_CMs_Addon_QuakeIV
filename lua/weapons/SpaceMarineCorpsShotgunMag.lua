@@ -1,3 +1,5 @@
+// TODO: Reload animation camera movement
+
 DEFINE_BASECLASS "BaseBulletWeapon"
 
 SWEP.Category = "Shotguns"
@@ -115,7 +117,7 @@ function SWEP:ViewModelDrawn()
 
 	local iClip, iMax = self:Clip1(), self:GetMaxClip1()
 
-	if iClip <= iMax * .2 then
+	if iClip <= iMax * .25 then
 		pViewModel:SetSubMaterial( 3, "models/weapons/quake4/shotgun/shotgungui2.vmt" )
 	elseif iClip <= iMax * .4 then
 		pViewModel:SetSubMaterial( 3, "models/weapons/quake4/shotgun/shotgungui3.vmt" )
